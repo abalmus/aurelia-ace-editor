@@ -5,7 +5,7 @@ System.register([], function (_export, _context) {
     setters: [],
     execute: function () {
       function configure(config) {
-        config.globalResources('./hello-world');
+        config.globalResources('./ace-editor');
       }
 
       _export('configure', configure);

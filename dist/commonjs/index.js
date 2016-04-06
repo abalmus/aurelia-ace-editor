@@ -5,5 +5,5 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.configure = configure;
 function configure(config) {
-  config.globalResources('./hello-world');
+  config.globalResources('./ace-editor');
 }
