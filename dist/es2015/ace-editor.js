@@ -46,7 +46,7 @@ function _initializerWarningHelper(descriptor, context) {
 import { inject, bindable, noView, customElement, processContent } from 'aurelia-framework';
 import ace from 'ace';
 
-export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(DOM.Element), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class AceEditor {
+export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class AceEditor {
 
     constructor(element) {
         _initDefineProp(this, 'content', _descriptor, this);

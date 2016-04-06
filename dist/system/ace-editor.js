@@ -63,7 +63,7 @@ System.register(['aurelia-framework', 'ace'], function (_export, _context) {
             ace = _ace.default;
         }],
         execute: function () {
-            _export('AceEditor', AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(DOM.Element), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+            _export('AceEditor', AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
                 function AceEditor(element) {
                     _classCallCheck(this, AceEditor);
 

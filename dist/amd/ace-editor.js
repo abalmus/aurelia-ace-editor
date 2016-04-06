@@ -65,7 +65,7 @@ define(['exports', 'aurelia-framework', 'ace'], function (exports, _aureliaFrame
 
     var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor;
 
-    var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)('ace'), _dec2 = (0, _aureliaFramework.processContent)(false), _dec3 = (0, _aureliaFramework.inject)(DOM.Element), (0, _aureliaFramework.noView)(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+    var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)('ace'), _dec2 = (0, _aureliaFramework.processContent)(false), _dec3 = (0, _aureliaFramework.inject)(Element), (0, _aureliaFramework.noView)(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
         function AceEditor(element) {
             _classCallCheck(this, AceEditor);
 

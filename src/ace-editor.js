@@ -4,7 +4,7 @@ import ace from 'ace';
 @noView
 @customElement('ace')
 @processContent(false)
-@inject(DOM.Element)
+@inject(Element)
 export class AceEditor {
     @bindable content;
     id = Math.floor((1 + Math.random()) * 0x10000);
