@@ -55,7 +55,6 @@
     "yargs": "^2.1.1"
   },
   "jspm": {
-    "registry": "npm",
     "main": "index",
     "format": "amd",
     "directories": {
