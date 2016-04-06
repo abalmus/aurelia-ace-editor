@@ -1,9 +1,9 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.configure = configure;
 function configure(config) {
-  config.globalResources('./ace-editor');
+    config.globalResources('./ace-editor');
 }

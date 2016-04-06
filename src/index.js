@@ -1,3 +1,3 @@
 export function configure(config) {
-  config.globalResources('./ace-editor');
+    config.globalResources('./ace-editor');
 }

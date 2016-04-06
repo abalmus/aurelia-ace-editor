@@ -6,13 +6,15 @@ import ace from 'ace';
 @processContent(false)
 @inject(DOM.Element)
 export class AceEditor {
+    @bindable content;
     id = Math.floor((1 + Math.random()) * 0x10000);
 
     constructor(element) {
         this.element = element;
+        this.ace = ace;
     }
 
     attached() {
-        this.element.setAttribute("id", this.id);
+        this.element.setAttribute('id', this.id);
     }
 }

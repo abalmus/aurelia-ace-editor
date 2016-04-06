@@ -1,6 +1,6 @@
 {
   "name": "aurelia-ace-editor",
-  "version": "1.0.0-beta.1.1.0",
+  "version": "1.0.0",
   "description": "Aurelia ace editor plugin.",
   "keywords": [
     "aurelia",
@@ -55,8 +55,8 @@
     "yargs": "^2.1.1"
   },
   "jspm": {
-    "jspmPackage": true,
     "registry": "npm",
+    "jspmPackage": true,
     "main": "index",
     "format": "amd",
     "directories": {
