@@ -1,6 +1,6 @@
 {
   "name": "aurelia-ace-editor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Aurelia ace editor plugin.",
   "keywords": [
     "aurelia",
@@ -63,6 +63,7 @@
       "dist": "dist/amd"
     },
     "dependencies": {
+      "ace": "github:ajaxorg/ace-builds@^1.2.3"
     },
     "devDependencies": {
       "aurelia-polyfills": "^1.0.0-beta.1.1.0"
