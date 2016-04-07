@@ -31,17 +31,27 @@ export class AceEditor {
         }
     }
 
+    getAceSrcPath() {
+        return System.normalize('ace/').then((path) => {
+            path = path.replace('/.js', '');
+            path = `/${path.replace(System.baseURL, '')}/`;
+            return path;
+        });
+    }
+
     attached() {
         this.element.setAttribute('id', this.id);
 
-        this.ace.config.set("basePath", `/jspm_packages/github/ajaxorg/ace-builds@${this.ace.version}/`);
+        this.getAceSrcPath().then(path => {
+            this.ace.config.set("basePath", path);
 
-        this.editor = this.ace.edit(this.id);
-        this.editor.setOptions(Object.assign({
-            blockScrolling: Infinity,
-            mode: 'ace/mode/javascript',
-            theme: 'ace/theme/monokai'}, this.options));
+            this.editor = this.ace.edit(this.id);
+            this.editor.setOptions(Object.assign({
+                blockScrolling: Infinity,
+                mode: 'ace/mode/javascript',
+                theme: 'ace/theme/monokai'}, this.options));
 
-        this.setValue();
+            this.setValue();
+        });
     }
 }

@@ -93,18 +93,30 @@ var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)
         }
     };
 
+    AceEditor.prototype.getAceSrcPath = function getAceSrcPath() {
+        return System.normalize('ace/').then(function (path) {
+            path = path.replace('/.js', '');
+            path = '/' + path.replace(System.baseURL, '') + '/';
+            return path;
+        });
+    };
+
     AceEditor.prototype.attached = function attached() {
+        var _this = this;
+
         this.element.setAttribute('id', this.id);
 
-        this.ace.config.set("basePath", '/jspm_packages/github/ajaxorg/ace-builds@' + this.ace.version + '/');
+        this.getAceSrcPath().then(function (path) {
+            _this.ace.config.set("basePath", path);
 
-        this.editor = this.ace.edit(this.id);
-        this.editor.setOptions(Object.assign({
-            blockScrolling: Infinity,
-            mode: 'ace/mode/javascript',
-            theme: 'ace/theme/monokai' }, this.options));
+            _this.editor = _this.ace.edit(_this.id);
+            _this.editor.setOptions(Object.assign({
+                blockScrolling: Infinity,
+                mode: 'ace/mode/javascript',
+                theme: 'ace/theme/monokai' }, _this.options));
 
-        this.setValue();
+            _this.setValue();
+        });
     };
 
     return AceEditor;
