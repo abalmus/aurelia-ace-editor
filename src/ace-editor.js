@@ -64,7 +64,7 @@ export class AceEditor {
             theme: 'ace/theme/monokai'}, this.getConfig());
 
         this.getAceSrcPath().then(path => {
-            this.ace.config.set("basePath", path);
+            this.ace.config.set('basePath', path);
 
             this.editor = this.ace.edit(this.id);
             this.editor.$blockScrolling = Infinity;

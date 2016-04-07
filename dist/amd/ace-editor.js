@@ -131,7 +131,7 @@ define(['exports', 'aurelia-framework', 'ace', './dedent'], function (exports, _
                 theme: 'ace/theme/monokai' }, this.getConfig());
 
             this.getAceSrcPath().then(function (path) {
-                _this.ace.config.set("basePath", path);
+                _this.ace.config.set('basePath', path);
 
                 _this.editor = _this.ace.edit(_this.id);
                 _this.editor.$blockScrolling = Infinity;

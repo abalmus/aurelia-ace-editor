@@ -128,7 +128,7 @@ var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)
             theme: 'ace/theme/monokai' }, this.getConfig());
 
         this.getAceSrcPath().then(function (path) {
-            _this.ace.config.set("basePath", path);
+            _this.ace.config.set('basePath', path);
 
             _this.editor = _this.ace.edit(_this.id);
             _this.editor.$blockScrolling = Infinity;
