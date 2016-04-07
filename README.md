@@ -11,7 +11,7 @@ The `aurelia-ace-editor` is a custom element for Aurelia application. Which allo
 Install the package into your project using JSPM.
 
 ```
-    jspm install github:abalmus/aurelia-ace-editor
+jspm install github:abalmus/aurelia-ace-editor
 ```
 
 Register it as a plugin with aurelia.
@@ -23,7 +23,27 @@ aurelia.use.plugin('abalmus/aurelia-ace-editor')
 ### Usage
 With binding behaviour
 ```
-  <ace content.bind="aceContent" options.bind="aceOptions"></ace>
+<ace content.bind="aceContent" options.bind="aceOptions"></ace>
+```
+
+Static config and content
+```
+<ace config-theme="ace/theme/eclipse"
+     config-mode="ace/mode/json">
+    {
+        "menu": {
+            "id": "file",
+            "value": "File",
+            "popup": {
+                "menuitem": [
+                    {"value": "New", "onclick": "CreateNewDoc()"},
+                    {"value": "Open", "onclick": "OpenDoc()"},
+                    {"value": "Close", "onclick": "CloseDoc()"}
+                ]
+            }
+        }
+    }
+</ace>
 ```
 
 ## Building The Code
