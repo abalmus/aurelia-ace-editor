@@ -6,7 +6,7 @@ The `aurelia-ace-editor` is a custom element for Aurelia application. Which allo
 
 ## How to use
 
-### Instalation
+### Installation
 
 Install the package into your project using JSPM.
 
