@@ -21,11 +21,9 @@ aurelia.use.plugin('abalmus/aurelia-ace-editor')
 ```
 
 ### Usage
-
+With binding behaviour
 ```
-    <ace content.bind="aceContent" 
-         options.one-way="aceOptions">
-    </ace>
+  <ace content.bind="aceContent" options.bind="aceOptions"></ace>
 ```
 
 ## Building The Code
