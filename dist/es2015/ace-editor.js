@@ -58,10 +58,11 @@ export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(fals
 
         this.element = element;
         this.ace = ace;
+        this.innerHTML = this.element.innerHTML;
     }
 
     setValue() {
-        let value = this.content || dedent(this.element.innerHTML);
+        let value = this.content || dedent(this.innerHTML);
 
         if (value) {
             this.editor.setValue(value, 1);
@@ -76,11 +77,15 @@ export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(fals
 
     attached() {
         this.element.setAttribute('id', this.id);
+
+        this.ace.config.set("basePath", `/jspm_packages/github/ajaxorg/ace-builds@${ this.ace.version }/`);
+
         this.editor = this.ace.edit(this.id);
         this.editor.setOptions(Object.assign({
             blockScrolling: Infinity,
             mode: 'ace/mode/javascript',
             theme: 'ace/theme/monokai' }, this.options));
+
         this.setValue();
     }
 }, (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'content', [bindable], {

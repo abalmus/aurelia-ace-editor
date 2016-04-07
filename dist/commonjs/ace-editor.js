@@ -76,10 +76,11 @@ var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)
 
         this.element = element;
         this.ace = _ace2.default;
+        this.innerHTML = this.element.innerHTML;
     }
 
     AceEditor.prototype.setValue = function setValue() {
-        var value = this.content || (0, _dedent2.default)(this.element.innerHTML);
+        var value = this.content || (0, _dedent2.default)(this.innerHTML);
 
         if (value) {
             this.editor.setValue(value, 1);
@@ -94,11 +95,15 @@ var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)
 
     AceEditor.prototype.attached = function attached() {
         this.element.setAttribute('id', this.id);
+
+        this.ace.config.set("basePath", '/jspm_packages/github/ajaxorg/ace-builds@' + this.ace.version + '/');
+
         this.editor = this.ace.edit(this.id);
         this.editor.setOptions(Object.assign({
             blockScrolling: Infinity,
             mode: 'ace/mode/javascript',
             theme: 'ace/theme/monokai' }, this.options));
+
         this.setValue();
     };
 
