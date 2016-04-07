@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-framework', 'ace'], function (exports, _aureliaFramework, _ace) {
+define(['exports', 'aurelia-framework', 'ace', './dedent'], function (exports, _aureliaFramework, _ace, _dedent) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -7,6 +7,8 @@ define(['exports', 'aurelia-framework', 'ace'], function (exports, _aureliaFrame
     exports.AceEditor = undefined;
 
     var _ace2 = _interopRequireDefault(_ace);
+
+    var _dedent2 = _interopRequireDefault(_dedent);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -63,7 +65,7 @@ define(['exports', 'aurelia-framework', 'ace'], function (exports, _aureliaFrame
         throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
     }
 
-    var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor;
+    var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2;
 
     var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)('ace'), _dec2 = (0, _aureliaFramework.processContent)(false), _dec3 = (0, _aureliaFramework.inject)(Element), (0, _aureliaFramework.noView)(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
         function AceEditor(element) {
@@ -71,18 +73,43 @@ define(['exports', 'aurelia-framework', 'ace'], function (exports, _aureliaFrame
 
             _initDefineProp(this, 'content', _descriptor, this);
 
-            this.id = Math.floor((1 + Math.random()) * 0x10000);
+            _initDefineProp(this, 'options', _descriptor2, this);
+
+            this.id = 'ace-editor-' + Math.floor((1 + Math.random()) * 0x10000);
 
             this.element = element;
             this.ace = _ace2.default;
         }
 
+        AceEditor.prototype.setValue = function setValue() {
+            var value = this.content || (0, _dedent2.default)(this.element.innerHTML);
+
+            if (value) {
+                this.editor.setValue(value, 1);
+            }
+        };
+
+        AceEditor.prototype.contentChanged = function contentChanged() {
+            if (this.editor) {
+                this.editor.setValue(this.content, 1);
+            }
+        };
+
         AceEditor.prototype.attached = function attached() {
             this.element.setAttribute('id', this.id);
+            this.editor = this.ace.edit(this.id);
+            this.editor.setOptions(Object.assign({
+                blockScrolling: Infinity,
+                mode: 'ace/mode/javascript',
+                theme: 'ace/theme/monokai' }, this.options));
+            this.setValue();
         };
 
         return AceEditor;
     }(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'content', [_aureliaFramework.bindable], {
+        enumerable: true,
+        initializer: null
+    }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'options', [_aureliaFramework.bindable], {
         enumerable: true,
         initializer: null
     })), _class2)) || _class) || _class) || _class) || _class);

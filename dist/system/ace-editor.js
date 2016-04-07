@@ -1,7 +1,7 @@
 'use strict';
 
-System.register(['aurelia-framework', 'ace'], function (_export, _context) {
-    var inject, bindable, noView, customElement, processContent, ace, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, AceEditor;
+System.register(['aurelia-framework', 'ace', './dedent'], function (_export, _context) {
+    var inject, bindable, noView, customElement, processContent, ace, dedent, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, AceEditor;
 
     function _initDefineProp(target, property, descriptor, context) {
         if (!descriptor) return;
@@ -61,6 +61,8 @@ System.register(['aurelia-framework', 'ace'], function (_export, _context) {
             processContent = _aureliaFramework.processContent;
         }, function (_ace) {
             ace = _ace.default;
+        }, function (_dedent) {
+            dedent = _dedent.default;
         }],
         execute: function () {
             _export('AceEditor', AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
@@ -69,18 +71,43 @@ System.register(['aurelia-framework', 'ace'], function (_export, _context) {
 
                     _initDefineProp(this, 'content', _descriptor, this);
 
-                    this.id = Math.floor((1 + Math.random()) * 0x10000);
+                    _initDefineProp(this, 'options', _descriptor2, this);
+
+                    this.id = 'ace-editor-' + Math.floor((1 + Math.random()) * 0x10000);
 
                     this.element = element;
                     this.ace = ace;
                 }
 
+                AceEditor.prototype.setValue = function setValue() {
+                    var value = this.content || dedent(this.element.innerHTML);
+
+                    if (value) {
+                        this.editor.setValue(value, 1);
+                    }
+                };
+
+                AceEditor.prototype.contentChanged = function contentChanged() {
+                    if (this.editor) {
+                        this.editor.setValue(this.content, 1);
+                    }
+                };
+
                 AceEditor.prototype.attached = function attached() {
                     this.element.setAttribute('id', this.id);
+                    this.editor = this.ace.edit(this.id);
+                    this.editor.setOptions(Object.assign({
+                        blockScrolling: Infinity,
+                        mode: 'ace/mode/javascript',
+                        theme: 'ace/theme/monokai' }, this.options));
+                    this.setValue();
                 };
 
                 return AceEditor;
             }(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'content', [bindable], {
+                enumerable: true,
+                initializer: null
+            }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'options', [bindable], {
                 enumerable: true,
                 initializer: null
             })), _class2)) || _class) || _class) || _class) || _class));

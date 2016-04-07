@@ -1,4 +1,4 @@
-var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor;
+var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2;
 
 function _initDefineProp(target, property, descriptor, context) {
     if (!descriptor) return;
@@ -45,22 +45,48 @@ function _initializerWarningHelper(descriptor, context) {
 
 import { inject, bindable, noView, customElement, processContent } from 'aurelia-framework';
 import ace from 'ace';
+import dedent from './dedent';
 
 export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class AceEditor {
 
     constructor(element) {
         _initDefineProp(this, 'content', _descriptor, this);
 
-        this.id = Math.floor((1 + Math.random()) * 0x10000);
+        _initDefineProp(this, 'options', _descriptor2, this);
+
+        this.id = `ace-editor-${ Math.floor((1 + Math.random()) * 0x10000) }`;
 
         this.element = element;
         this.ace = ace;
     }
 
+    setValue() {
+        let value = this.content || dedent(this.element.innerHTML);
+
+        if (value) {
+            this.editor.setValue(value, 1);
+        }
+    }
+
+    contentChanged() {
+        if (this.editor) {
+            this.editor.setValue(this.content, 1);
+        }
+    }
+
     attached() {
         this.element.setAttribute('id', this.id);
+        this.editor = this.ace.edit(this.id);
+        this.editor.setOptions(Object.assign({
+            blockScrolling: Infinity,
+            mode: 'ace/mode/javascript',
+            theme: 'ace/theme/monokai' }, this.options));
+        this.setValue();
     }
 }, (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'content', [bindable], {
+    enumerable: true,
+    initializer: null
+}), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'options', [bindable], {
     enumerable: true,
     initializer: null
 })), _class2)) || _class) || _class) || _class) || _class);
