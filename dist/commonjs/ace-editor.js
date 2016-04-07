@@ -101,19 +101,38 @@ var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)
         });
     };
 
+    AceEditor.prototype.parseConfigAttributes = function parseConfigAttributes() {
+        var attributes = this.element.attributes;
+        var config = {};
+
+        [].forEach.call(attributes, function (attribute) {
+            if (attribute.name.indexOf('config-') !== -1) {
+                config[attribute.name.replace('config-', '')] = attribute.value;
+            }
+        });
+
+        return config;
+    };
+
+    AceEditor.prototype.getConfig = function getConfig() {
+        return this.options || this.parseConfigAttributes() || {};
+    };
+
     AceEditor.prototype.attached = function attached() {
         var _this = this;
 
         this.element.setAttribute('id', this.id);
 
+        this.config = Object.assign({
+            mode: 'ace/mode/javascript',
+            theme: 'ace/theme/monokai' }, this.getConfig());
+
         this.getAceSrcPath().then(function (path) {
             _this.ace.config.set("basePath", path);
 
             _this.editor = _this.ace.edit(_this.id);
-            _this.editor.setOptions(Object.assign({
-                blockScrolling: Infinity,
-                mode: 'ace/mode/javascript',
-                theme: 'ace/theme/monokai' }, _this.options));
+            _this.editor.$blockScrolling = Infinity;
+            _this.editor.setOptions(_this.config);
 
             _this.setValue();
         });

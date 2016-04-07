@@ -39,17 +39,36 @@ export class AceEditor {
         });
     }
 
+    parseConfigAttributes() {
+        let attributes = this.element.attributes;
+        let config = {};
+
+        [].forEach.call(attributes, attribute => {
+            if (attribute.name.indexOf('config-') !== -1) {
+                config[attribute.name.replace('config-', '')] = attribute.value;
+            }
+        });
+
+        return config;
+    }
+
+    getConfig() {
+        return this.options || this.parseConfigAttributes() || {};
+    }
+
     attached() {
         this.element.setAttribute('id', this.id);
+
+        this.config = Object.assign({
+            mode: 'ace/mode/javascript',
+            theme: 'ace/theme/monokai'}, this.getConfig());
 
         this.getAceSrcPath().then(path => {
             this.ace.config.set("basePath", path);
 
             this.editor = this.ace.edit(this.id);
-            this.editor.setOptions(Object.assign({
-                blockScrolling: Infinity,
-                mode: 'ace/mode/javascript',
-                theme: 'ace/theme/monokai'}, this.options));
+            this.editor.$blockScrolling = Infinity;
+            this.editor.setOptions(this.config);
 
             this.setValue();
         });
