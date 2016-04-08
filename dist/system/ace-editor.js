@@ -1,7 +1,7 @@
 'use strict';
 
-System.register(['aurelia-framework', 'ace', './dedent'], function (_export, _context) {
-    var inject, bindable, noView, customElement, processContent, ace, dedent, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, AceEditor;
+System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], function (_export, _context) {
+    var inject, bindable, noView, customElement, processContent, ace, dedent, PropConverter, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, AceEditor;
 
     function _initDefineProp(target, property, descriptor, context) {
         if (!descriptor) return;
@@ -63,10 +63,12 @@ System.register(['aurelia-framework', 'ace', './dedent'], function (_export, _co
             ace = _ace.default;
         }, function (_dedent) {
             dedent = _dedent.default;
+        }, function (_propConverter) {
+            PropConverter = _propConverter.PropConverter;
         }],
         execute: function () {
-            _export('AceEditor', AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
-                function AceEditor(element) {
+            _export('AceEditor', AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element, PropConverter), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+                function AceEditor(element, propConverter) {
                     _classCallCheck(this, AceEditor);
 
                     _initDefineProp(this, 'content', _descriptor, this);
@@ -76,6 +78,7 @@ System.register(['aurelia-framework', 'ace', './dedent'], function (_export, _co
                     this.id = 'ace-editor-' + Math.floor((1 + Math.random()) * 0x10000);
 
                     this.element = element;
+                    this.propConverter = propConverter;
                     this.ace = ace;
                     this.innerHTML = this.element.innerHTML;
                 }
@@ -102,13 +105,20 @@ System.register(['aurelia-framework', 'ace', './dedent'], function (_export, _co
                     });
                 };
 
+                AceEditor.prototype.replacer = function replacer(match) {
+                    return match.replace('-', '').toUpperCase();
+                };
+
                 AceEditor.prototype.parseConfigAttributes = function parseConfigAttributes() {
+                    var _this = this;
+
                     var attributes = this.element.attributes;
                     var config = {};
 
                     [].forEach.call(attributes, function (attribute) {
                         if (attribute.name.indexOf('config-') !== -1) {
-                            config[attribute.name.replace('config-', '')] = attribute.value;
+                            var attributeName = attribute.name.replace('config-', '').replace(/-./g, _this.replacer);
+                            config[attributeName] = _this.propConverter.convert(attributeName, attribute.value);
                         }
                     });
 
@@ -116,26 +126,24 @@ System.register(['aurelia-framework', 'ace', './dedent'], function (_export, _co
                 };
 
                 AceEditor.prototype.getConfig = function getConfig() {
-                    return this.options || this.parseConfigAttributes() || {};
+                    return Object.assign(this.parseConfigAttributes(), this.options);
                 };
 
                 AceEditor.prototype.attached = function attached() {
-                    var _this = this;
+                    var _this2 = this;
 
                     this.element.setAttribute('id', this.id);
 
-                    this.config = Object.assign({
-                        mode: 'ace/mode/javascript',
-                        theme: 'ace/theme/monokai' }, this.getConfig());
+                    this.config = Object.assign(this.getConfig());
 
                     this.getAceSrcPath().then(function (path) {
-                        _this.ace.config.set('basePath', path);
+                        _this2.ace.config.set('basePath', path);
 
-                        _this.editor = _this.ace.edit(_this.id);
-                        _this.editor.$blockScrolling = Infinity;
-                        _this.editor.setOptions(_this.config);
+                        _this2.editor = _this2.ace.edit(_this2.id);
+                        _this2.editor.$blockScrolling = Infinity;
+                        _this2.editor.setOptions(_this2.config);
 
-                        _this.setValue();
+                        _this2.setValue();
                     });
                 };
 
