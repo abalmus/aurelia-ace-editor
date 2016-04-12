@@ -1,6 +1,6 @@
 # aurelia-ace-editor
 
-> Note: This plugin is still in development. It is not ready for production.
+> Note: This plugin is still in development.
 
 The `aurelia-ace-editor` is a custom element for Aurelia application. Which allows you easily embed an `ace` editor to your application.
 
