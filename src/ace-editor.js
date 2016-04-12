@@ -1,4 +1,4 @@
-import {inject, bindable, noView, customElement, processContent} from 'aurelia-framework';
+import {inject, bindable, noView, customElement, processContent, Loader} from 'aurelia-framework';
 import ace from 'ace';
 import dedent from './dedent';
 import {PropConverter} from './prop-converter';
@@ -6,17 +6,18 @@ import {PropConverter} from './prop-converter';
 @noView
 @customElement('ace')
 @processContent(false)
-@inject(Element, PropConverter)
+@inject(Element, PropConverter, Loader)
 export class AceEditor {
     @bindable content;
     @bindable options;
     id = `ace-editor-${Math.floor((1 + Math.random()) * 0x10000)}`;
 
-    constructor(element, propConverter) {
+    constructor(element, propConverter, loader) {
         this.element = element;
         this.propConverter = propConverter;
         this.ace = ace;
         this.innerHTML = this.element.innerHTML;
+        this.loader = loader;
     }
 
     setValue() {
@@ -33,12 +34,9 @@ export class AceEditor {
         }
     }
 
-    getAceSrcPath() {
-        return System.normalize('ace/').then((path) => {
-            path = path.replace('/.js', '');
-            path = `/${path.replace(System.baseURL, '')}/`;
-            return path;
-        });
+    getAceSrcPath(loader) {
+        let packagePath = loader.normalizeSync('ace');
+        return packagePath.substr(0, packagePath.length - 3);
     }
 
     replacer(match) {
@@ -68,15 +66,12 @@ export class AceEditor {
         this.element.setAttribute('id', this.id);
 
         this.config = Object.assign(this.getConfig());
+        this.ace.config.set('basePath', this.getAceSrcPath(this.loader || System));
 
-        this.getAceSrcPath().then(path => {
-            this.ace.config.set('basePath', path);
+        this.editor = this.ace.edit(this.id);
+        this.editor.$blockScrolling = Infinity;
+        this.editor.setOptions(this.config);
 
-            this.editor = this.ace.edit(this.id);
-            this.editor.$blockScrolling = Infinity;
-            this.editor.setOptions(this.config);
-
-            this.setValue();
-        });
+        this.setValue();
     }
 }

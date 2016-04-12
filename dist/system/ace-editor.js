@@ -1,7 +1,7 @@
 'use strict';
 
 System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], function (_export, _context) {
-    var inject, bindable, noView, customElement, processContent, ace, dedent, PropConverter, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, AceEditor;
+    var inject, bindable, noView, customElement, processContent, Loader, ace, dedent, PropConverter, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, AceEditor;
 
     function _initDefineProp(target, property, descriptor, context) {
         if (!descriptor) return;
@@ -59,6 +59,7 @@ System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], fu
             noView = _aureliaFramework.noView;
             customElement = _aureliaFramework.customElement;
             processContent = _aureliaFramework.processContent;
+            Loader = _aureliaFramework.Loader;
         }, function (_ace) {
             ace = _ace.default;
         }, function (_dedent) {
@@ -67,8 +68,8 @@ System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], fu
             PropConverter = _propConverter.PropConverter;
         }],
         execute: function () {
-            _export('AceEditor', AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element, PropConverter), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
-                function AceEditor(element, propConverter) {
+            _export('AceEditor', AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element, PropConverter, Loader), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+                function AceEditor(element, propConverter, loader) {
                     _classCallCheck(this, AceEditor);
 
                     _initDefineProp(this, 'content', _descriptor, this);
@@ -81,6 +82,7 @@ System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], fu
                     this.propConverter = propConverter;
                     this.ace = ace;
                     this.innerHTML = this.element.innerHTML;
+                    this.loader = loader;
                 }
 
                 AceEditor.prototype.setValue = function setValue() {
@@ -97,12 +99,9 @@ System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], fu
                     }
                 };
 
-                AceEditor.prototype.getAceSrcPath = function getAceSrcPath() {
-                    return System.normalize('ace/').then(function (path) {
-                        path = path.replace('/.js', '');
-                        path = '/' + path.replace(System.baseURL, '') + '/';
-                        return path;
-                    });
+                AceEditor.prototype.getAceSrcPath = function getAceSrcPath(loader) {
+                    var packagePath = loader.normalizeSync('ace');
+                    return packagePath.substr(0, packagePath.length - 3);
                 };
 
                 AceEditor.prototype.replacer = function replacer(match) {
@@ -130,21 +129,16 @@ System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], fu
                 };
 
                 AceEditor.prototype.attached = function attached() {
-                    var _this2 = this;
-
                     this.element.setAttribute('id', this.id);
 
                     this.config = Object.assign(this.getConfig());
+                    this.ace.config.set('basePath', this.getAceSrcPath(this.loader || System));
 
-                    this.getAceSrcPath().then(function (path) {
-                        _this2.ace.config.set('basePath', path);
+                    this.editor = this.ace.edit(this.id);
+                    this.editor.$blockScrolling = Infinity;
+                    this.editor.setOptions(this.config);
 
-                        _this2.editor = _this2.ace.edit(_this2.id);
-                        _this2.editor.$blockScrolling = Infinity;
-                        _this2.editor.setOptions(_this2.config);
-
-                        _this2.setValue();
-                    });
+                    this.setValue();
                 };
 
                 return AceEditor;

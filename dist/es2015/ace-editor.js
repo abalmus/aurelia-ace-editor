@@ -43,14 +43,14 @@ function _initializerWarningHelper(descriptor, context) {
     throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-import { inject, bindable, noView, customElement, processContent } from 'aurelia-framework';
+import { inject, bindable, noView, customElement, processContent, Loader } from 'aurelia-framework';
 import ace from 'ace';
 import dedent from './dedent';
 import { PropConverter } from './prop-converter';
 
-export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element, PropConverter), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class AceEditor {
+export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(false), _dec3 = inject(Element, PropConverter, Loader), noView(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = class AceEditor {
 
-    constructor(element, propConverter) {
+    constructor(element, propConverter, loader) {
         _initDefineProp(this, 'content', _descriptor, this);
 
         _initDefineProp(this, 'options', _descriptor2, this);
@@ -61,6 +61,7 @@ export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(fals
         this.propConverter = propConverter;
         this.ace = ace;
         this.innerHTML = this.element.innerHTML;
+        this.loader = loader;
     }
 
     setValue() {
@@ -77,12 +78,9 @@ export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(fals
         }
     }
 
-    getAceSrcPath() {
-        return System.normalize('ace/').then(path => {
-            path = path.replace('/.js', '');
-            path = `/${ path.replace(System.baseURL, '') }/`;
-            return path;
-        });
+    getAceSrcPath(loader) {
+        let packagePath = loader.normalizeSync('ace');
+        return packagePath.substr(0, packagePath.length - 3);
     }
 
     replacer(match) {
@@ -111,16 +109,13 @@ export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(fals
         this.element.setAttribute('id', this.id);
 
         this.config = Object.assign(this.getConfig());
+        this.ace.config.set('basePath', this.getAceSrcPath(this.loader || System));
 
-        this.getAceSrcPath().then(path => {
-            this.ace.config.set('basePath', path);
+        this.editor = this.ace.edit(this.id);
+        this.editor.$blockScrolling = Infinity;
+        this.editor.setOptions(this.config);
 
-            this.editor = this.ace.edit(this.id);
-            this.editor.$blockScrolling = Infinity;
-            this.editor.setOptions(this.config);
-
-            this.setValue();
-        });
+        this.setValue();
     }
 }, (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'content', [bindable], {
     enumerable: true,

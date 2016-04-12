@@ -67,8 +67,8 @@ define(['exports', 'aurelia-framework', 'ace', './dedent', './prop-converter'], 
 
     var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2;
 
-    var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)('ace'), _dec2 = (0, _aureliaFramework.processContent)(false), _dec3 = (0, _aureliaFramework.inject)(Element, _propConverter.PropConverter), (0, _aureliaFramework.noView)(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
-        function AceEditor(element, propConverter) {
+    var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)('ace'), _dec2 = (0, _aureliaFramework.processContent)(false), _dec3 = (0, _aureliaFramework.inject)(Element, _propConverter.PropConverter, _aureliaFramework.Loader), (0, _aureliaFramework.noView)(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
+        function AceEditor(element, propConverter, loader) {
             _classCallCheck(this, AceEditor);
 
             _initDefineProp(this, 'content', _descriptor, this);
@@ -81,6 +81,7 @@ define(['exports', 'aurelia-framework', 'ace', './dedent', './prop-converter'], 
             this.propConverter = propConverter;
             this.ace = _ace2.default;
             this.innerHTML = this.element.innerHTML;
+            this.loader = loader;
         }
 
         AceEditor.prototype.setValue = function setValue() {
@@ -97,12 +98,9 @@ define(['exports', 'aurelia-framework', 'ace', './dedent', './prop-converter'], 
             }
         };
 
-        AceEditor.prototype.getAceSrcPath = function getAceSrcPath() {
-            return System.normalize('ace/').then(function (path) {
-                path = path.replace('/.js', '');
-                path = '/' + path.replace(System.baseURL, '') + '/';
-                return path;
-            });
+        AceEditor.prototype.getAceSrcPath = function getAceSrcPath(loader) {
+            var packagePath = loader.normalizeSync('ace');
+            return packagePath.substr(0, packagePath.length - 3);
         };
 
         AceEditor.prototype.replacer = function replacer(match) {
@@ -130,21 +128,16 @@ define(['exports', 'aurelia-framework', 'ace', './dedent', './prop-converter'], 
         };
 
         AceEditor.prototype.attached = function attached() {
-            var _this2 = this;
-
             this.element.setAttribute('id', this.id);
 
             this.config = Object.assign(this.getConfig());
+            this.ace.config.set('basePath', this.getAceSrcPath(this.loader || System));
 
-            this.getAceSrcPath().then(function (path) {
-                _this2.ace.config.set('basePath', path);
+            this.editor = this.ace.edit(this.id);
+            this.editor.$blockScrolling = Infinity;
+            this.editor.setOptions(this.config);
 
-                _this2.editor = _this2.ace.edit(_this2.id);
-                _this2.editor.$blockScrolling = Infinity;
-                _this2.editor.setOptions(_this2.config);
-
-                _this2.setValue();
-            });
+            this.setValue();
         };
 
         return AceEditor;
