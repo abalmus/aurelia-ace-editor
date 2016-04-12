@@ -1,7 +1,7 @@
 'use strict';
 
 System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], function (_export, _context) {
-    var inject, bindable, noView, customElement, processContent, Loader, ace, dedent, PropConverter, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, AceEditor;
+    var inject, bindable, noView, customElement, processContent, Loader, ace, dedent, PropConverter, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, AceEditor;
 
     function _initDefineProp(target, property, descriptor, context) {
         if (!descriptor) return;
@@ -76,6 +76,8 @@ System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], fu
 
                     _initDefineProp(this, 'options', _descriptor2, this);
 
+                    _initDefineProp(this, 'editor', _descriptor3, this);
+
                     this.id = 'ace-editor-' + Math.floor((1 + Math.random()) * 0x10000);
 
                     this.element = element;
@@ -128,17 +130,23 @@ System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], fu
                     return Object.assign(this.parseConfigAttributes(), this.options);
                 };
 
-                AceEditor.prototype.attached = function attached() {
+                AceEditor.prototype.bind = function bind() {
                     this.element.setAttribute('id', this.id);
 
                     this.config = Object.assign(this.getConfig());
                     this.ace.config.set('basePath', this.getAceSrcPath(this.loader || System));
 
-                    this.editor = this.ace.edit(this.id);
+                    this.editor = this.ace.edit(this.element);
                     this.editor.$blockScrolling = Infinity;
                     this.editor.setOptions(this.config);
+                };
 
+                AceEditor.prototype.attached = function attached() {
                     this.setValue();
+                };
+
+                AceEditor.prototype.detached = function detached() {
+                    this.editor.destroy();
                 };
 
                 return AceEditor;
@@ -146,6 +154,9 @@ System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], fu
                 enumerable: true,
                 initializer: null
             }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'options', [bindable], {
+                enumerable: true,
+                initializer: null
+            }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'editor', [bindable], {
                 enumerable: true,
                 initializer: null
             })), _class2)) || _class) || _class) || _class) || _class));

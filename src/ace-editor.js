@@ -10,6 +10,7 @@ import {PropConverter} from './prop-converter';
 export class AceEditor {
     @bindable content;
     @bindable options;
+    @bindable editor;
     id = `ace-editor-${Math.floor((1 + Math.random()) * 0x10000)}`;
 
     constructor(element, propConverter, loader) {
@@ -62,16 +63,22 @@ export class AceEditor {
         return   Object.assign(this.parseConfigAttributes(), this.options);
     }
 
-    attached() {
+    bind() {
         this.element.setAttribute('id', this.id);
 
         this.config = Object.assign(this.getConfig());
         this.ace.config.set('basePath', this.getAceSrcPath(this.loader || System));
 
-        this.editor = this.ace.edit(this.id);
+        this.editor = this.ace.edit(this.element);
         this.editor.$blockScrolling = Infinity;
         this.editor.setOptions(this.config);
+    }
 
+    attached() {
         this.setValue();
+    }
+
+    detached() {
+        this.editor.destroy();
     }
 }

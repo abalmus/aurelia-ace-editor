@@ -65,7 +65,7 @@ define(['exports', 'aurelia-framework', 'ace', './dedent', './prop-converter'], 
         throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
     }
 
-    var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2;
+    var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3;
 
     var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)('ace'), _dec2 = (0, _aureliaFramework.processContent)(false), _dec3 = (0, _aureliaFramework.inject)(Element, _propConverter.PropConverter, _aureliaFramework.Loader), (0, _aureliaFramework.noView)(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = function () {
         function AceEditor(element, propConverter, loader) {
@@ -74,6 +74,8 @@ define(['exports', 'aurelia-framework', 'ace', './dedent', './prop-converter'], 
             _initDefineProp(this, 'content', _descriptor, this);
 
             _initDefineProp(this, 'options', _descriptor2, this);
+
+            _initDefineProp(this, 'editor', _descriptor3, this);
 
             this.id = 'ace-editor-' + Math.floor((1 + Math.random()) * 0x10000);
 
@@ -127,17 +129,23 @@ define(['exports', 'aurelia-framework', 'ace', './dedent', './prop-converter'], 
             return Object.assign(this.parseConfigAttributes(), this.options);
         };
 
-        AceEditor.prototype.attached = function attached() {
+        AceEditor.prototype.bind = function bind() {
             this.element.setAttribute('id', this.id);
 
             this.config = Object.assign(this.getConfig());
             this.ace.config.set('basePath', this.getAceSrcPath(this.loader || System));
 
-            this.editor = this.ace.edit(this.id);
+            this.editor = this.ace.edit(this.element);
             this.editor.$blockScrolling = Infinity;
             this.editor.setOptions(this.config);
+        };
 
+        AceEditor.prototype.attached = function attached() {
             this.setValue();
+        };
+
+        AceEditor.prototype.detached = function detached() {
+            this.editor.destroy();
         };
 
         return AceEditor;
@@ -145,6 +153,9 @@ define(['exports', 'aurelia-framework', 'ace', './dedent', './prop-converter'], 
         enumerable: true,
         initializer: null
     }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'options', [_aureliaFramework.bindable], {
+        enumerable: true,
+        initializer: null
+    }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'editor', [_aureliaFramework.bindable], {
         enumerable: true,
         initializer: null
     })), _class2)) || _class) || _class) || _class) || _class);
