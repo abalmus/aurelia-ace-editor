@@ -46,6 +46,35 @@ Static config and content
 </ace>
 ```
 
+### Setting options dynamically 
+You could also dynamically  change some options by getting the current instance of the `ace editor`. 
+You have two options for that:
+
+1. Using reference to the ace element and `au` property:
+  
+  view:
+  ```
+  <ace ref="aceEditor" content.bind="aceContent"></ace>
+  ```
+  
+  model:
+  ```
+  let editor = this.aceEditor.au.ace.viewModel.editor;
+  editor.getSession().setMode('ace/mode/javascript');
+  ```
+
+2. Using bindable property:
+  
+  view:
+  ```
+  <ace editor.bind="aceEditor" content.bind="aceContent"></ace>
+  ```
+  
+  model:
+  ```
+  this.aceEditor.getSession().setMode('ace/mode/javascript');
+  ```
+
 ## Building The Code
 
 To build the code, follow these steps.
