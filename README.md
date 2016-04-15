@@ -91,14 +91,12 @@ You have two options for that:
 
 1. From  the `demo` folder execute the following commands:
 ```
-cd demo
 npm install
 jspm install
 ```
 2. From the project folder run `gulp demo`
 
 ```
-cd ..
 gulp demo
 ```
 
