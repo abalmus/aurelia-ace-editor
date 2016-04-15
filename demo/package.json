@@ -2,6 +2,7 @@
   "jspm": {
     "dependencies": {
       "abalmus/aurelia-ace-editor": "github:abalmus/aurelia-ace-editor@master",
+      "ace": "github:ajaxorg/ace-builds@^1.2.3",
       "aurelia-animator-css": "npm:aurelia-animator-css@^1.0.0-beta.1.1.2",
       "aurelia-bootstrapper": "npm:aurelia-bootstrapper@^1.0.0-beta.1.1.4",
       "aurelia-fetch-client": "npm:aurelia-fetch-client@^1.0.0-beta.1.1.1",
