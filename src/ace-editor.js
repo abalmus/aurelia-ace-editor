@@ -72,9 +72,7 @@ export class AceEditor {
         this.editor = this.ace.edit(this.element);
         this.editor.$blockScrolling = Infinity;
         this.editor.setOptions(this.config);
-    }
 
-    attached() {
         this.setValue();
     }
 

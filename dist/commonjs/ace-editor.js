@@ -137,9 +137,7 @@ var AceEditor = exports.AceEditor = (_dec = (0, _aureliaFramework.customElement)
         this.editor = this.ace.edit(this.element);
         this.editor.$blockScrolling = Infinity;
         this.editor.setOptions(this.config);
-    };
 
-    AceEditor.prototype.attached = function attached() {
         this.setValue();
     };
 

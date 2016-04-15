@@ -116,9 +116,7 @@ export let AceEditor = (_dec = customElement('ace'), _dec2 = processContent(fals
         this.editor = this.ace.edit(this.element);
         this.editor.$blockScrolling = Infinity;
         this.editor.setOptions(this.config);
-    }
 
-    attached() {
         this.setValue();
     }
 

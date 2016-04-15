@@ -139,9 +139,7 @@ System.register(['aurelia-framework', 'ace', './dedent', './prop-converter'], fu
                     this.editor = this.ace.edit(this.element);
                     this.editor.$blockScrolling = Infinity;
                     this.editor.setOptions(this.config);
-                };
 
-                AceEditor.prototype.attached = function attached() {
                     this.setValue();
                 };
 
