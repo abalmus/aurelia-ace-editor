@@ -21,6 +21,18 @@ aurelia.use.plugin('abalmus/aurelia-ace-editor')
 ```
 
 ### Usage
+```
+<style>
+    .ace_editor {
+        display: block;
+        border: 1px solid lightgray;
+        margin: auto;
+        height: 300px;
+        width: 100%;
+    }
+  </style>
+```
+
 With binding behaviour
 ```
 <ace content.bind="aceContent" options.bind="aceOptions"></ace>
@@ -74,6 +86,21 @@ You have two options for that:
   ```
   this.aceEditor.getSession().setMode('ace/mode/javascript');
   ```
+
+## To run demo locally 
+
+1. From  the `demo` folder execute the following commands:
+```
+cd demo
+npm install
+jspm install
+```
+2. From the project folder run `gulp demo`
+
+```
+cd ..
+gulp demo
+```
 
 ## Building The Code
 
