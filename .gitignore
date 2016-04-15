@@ -5,4 +5,3 @@ bower_components
 .vscode
 .DS_STORE
 build/reports
-**/jsconfig.json

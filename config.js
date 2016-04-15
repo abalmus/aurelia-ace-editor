@@ -7,10 +7,6 @@ System.config({
   },
 
   map: {
-    "ace": "github:ajaxorg/ace-builds@1.2.3",
-    "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0-beta.1.1.0",
-    "npm:aurelia-polyfills@1.0.0-beta.1.1.0": {
-      "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1.2.0"
-    }
+    "ace": "github:ajaxorg/ace-builds@1.2.3"
   }
 });
