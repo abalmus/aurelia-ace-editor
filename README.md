@@ -9,7 +9,7 @@ The `aurelia-ace-editor` is a custom element for Aurelia application. Which allo
 Install the package into your project using JSPM.
 
 ```
-jspm install github:abalmus/aurelia-ace-editor
+jspm install ace github:abalmus/aurelia-ace-editor
 ```
 
 Register it as a plugin with aurelia.
